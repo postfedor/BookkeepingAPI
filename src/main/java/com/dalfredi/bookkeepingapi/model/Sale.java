@@ -12,7 +12,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "sales", schema = "bookkeeping")
+@Table(name = "sale", schema = "bookkeeping")
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

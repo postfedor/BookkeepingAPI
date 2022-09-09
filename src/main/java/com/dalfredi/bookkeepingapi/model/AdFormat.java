@@ -11,7 +11,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "adformats", schema = "bookkeeping")
+@Table(name = "adformat", schema = "bookkeeping")
 public class AdFormat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

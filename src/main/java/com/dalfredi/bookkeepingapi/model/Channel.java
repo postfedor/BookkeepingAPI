@@ -17,7 +17,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "channels", schema = "bookkeeping")
+@Table(name = "channel", schema = "bookkeeping")
 public class Channel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
