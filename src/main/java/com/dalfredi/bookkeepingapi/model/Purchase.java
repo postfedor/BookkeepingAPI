@@ -1,5 +1,6 @@
 package com.dalfredi.bookkeepingapi.model;
 
+import com.dalfredi.bookkeepingapi.model.audit.UserDateAudit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "purchase", schema = "bookkeeping")
-public class Purchase {
+public class Purchase extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

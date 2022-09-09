@@ -1,7 +1,8 @@
 package com.dalfredi.bookkeepingapi.config;
 
-import com.dalfredi.bookkeepingapi.security.JwtAuthentication;
+import com.dalfredi.bookkeepingapi.security.UserPrincipal;
 import java.util.Optional;
+import lombok.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -15,15 +16,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class AuditingConfig {
 
     @Bean
-    public AuditorAware<String> auditorProvider() {
+    public AuditorAware<Long> auditorProvider() {
         return new SpringSecurityAuditAwareImpl();
     }
 }
 
-class SpringSecurityAuditAwareImpl implements AuditorAware<String> {
+class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
 
     @Override
-    public Optional<String> getCurrentAuditor() {
+    @NonNull
+    public Optional<Long> getCurrentAuditor() {
         Authentication authentication =
             SecurityContextHolder.getContext().getAuthentication();
 
@@ -33,9 +35,8 @@ class SpringSecurityAuditAwareImpl implements AuditorAware<String> {
             return Optional.empty();
         }
 
-        JwtAuthentication authUser =
-            (JwtAuthentication) authentication.getPrincipal();
+        UserPrincipal authUser = (UserPrincipal) authentication.getPrincipal();
 
-        return Optional.ofNullable(authUser.getUsername());
+        return Optional.ofNullable(authUser.getId());
     }
 }

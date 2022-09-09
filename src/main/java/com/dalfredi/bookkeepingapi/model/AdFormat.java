@@ -1,5 +1,6 @@
 package com.dalfredi.bookkeepingapi.model;
 
+import com.dalfredi.bookkeepingapi.model.audit.UserDateAudit;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "adformat", schema = "bookkeeping")
-public class AdFormat {
+public class AdFormat extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
