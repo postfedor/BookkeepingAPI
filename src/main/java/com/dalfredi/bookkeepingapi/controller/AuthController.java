@@ -25,7 +25,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public ResponseEntity<ApiResponse> registerUser(
         @Valid @RequestBody SignUpRequest signUpRequest
     ) {
@@ -37,7 +37,7 @@ public class AuthController {
             new ApiResponse(Boolean.TRUE, "User registered successfully"));
     }
 
-    @PostMapping("signin")
+    @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> login(
         @RequestBody LoginRequest loginRequest
     ) throws AuthException {
@@ -45,7 +45,7 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("token")
+    @PostMapping("/token")
     public ResponseEntity<JwtAuthenticationResponse> getNewAccessToken(
         @RequestBody RefreshJwtRequest request) throws AuthException {
         final JwtAuthenticationResponse token =
@@ -53,7 +53,7 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("refresh")
+    @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> getNewRefreshToken(
         @RequestBody RefreshJwtRequest request) throws AuthException {
         final JwtAuthenticationResponse token =

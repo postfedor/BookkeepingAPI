@@ -34,7 +34,10 @@ public class SecurityConfig {
                 authz -> authz
                     .antMatchers("/api/auth/signup", "/api/auth/signin",
                         "/api/auth/token", "/api/user/checkEmailAvailability",
-                        "/api/user/checkUsernameAvailability").permitAll()
+                        "/api/user/checkUsernameAvailability",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**"
+                    ).permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .addFilterAfter(jwtFilter,
