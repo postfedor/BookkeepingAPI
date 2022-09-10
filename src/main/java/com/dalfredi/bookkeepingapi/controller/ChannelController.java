@@ -6,6 +6,7 @@ import com.dalfredi.bookkeepingapi.payload.ChannelResponse;
 import com.dalfredi.bookkeepingapi.security.CurrentUser;
 import com.dalfredi.bookkeepingapi.security.UserPrincipal;
 import com.dalfredi.bookkeepingapi.service.ChannelService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
@@ -33,6 +34,7 @@ public class ChannelController {
 
     @PostMapping
     @Parameter(name = "currentUser", hidden = true)
+    @Operation(summary = "Add new channel", description = "Channel owner set to current authenticated user")
     public ResponseEntity<ChannelResponse> addChannel(
         @Valid @RequestBody ChannelRequest channelRequest,
         @CurrentUser UserPrincipal currentUser
@@ -43,6 +45,7 @@ public class ChannelController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get channel by ID", description = "Checks if requested channel belongs to current user. Returns only one channel.")
     public ResponseEntity<ChannelResponse> getChannelInfo(
         @PathVariable(name = "id") Long channelId,
         @CurrentUser UserPrincipal currentUser
@@ -54,6 +57,7 @@ public class ChannelController {
 
     @PutMapping("/{id}")
     @Parameter(name = "currentUser", hidden = true)
+    @Operation(summary = "Update an existing channel", description = "ID of channel should be passed in request body. Only channel which belongs to current user could be updated.")
     public ResponseEntity<ChannelResponse> updateChannelInfo(
         @PathVariable(name = "id") Long channelId,
         @Valid @RequestBody ChannelRequest channelRequest,
@@ -67,6 +71,7 @@ public class ChannelController {
 
     @DeleteMapping("/{id}")
     @Parameter(name = "currentUser", hidden = true)
+    @Operation(summary = "Delete channel by ID", description = "Channel may only be deleted by its owner")
     public ResponseEntity<ApiResponse> deleteChannel(
         @PathVariable(name = "id") Long channelId,
         @CurrentUser UserPrincipal currentUser

@@ -5,6 +5,9 @@ import com.dalfredi.bookkeepingapi.payload.UserSummary;
 import com.dalfredi.bookkeepingapi.security.CurrentUser;
 import com.dalfredi.bookkeepingapi.security.UserPrincipal;
 import com.dalfredi.bookkeepingapi.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping(
+    value = "/user",
+    consumes = "application/json",
+    produces = "application/json")
 @RequiredArgsConstructor
+@Tag(name = "User", description = "User managing")
 public class UserController {
     private final UserService userService;
 
     @GetMapping("/checkUsernameAvailability")
+    @SecurityRequirements
+    @Operation(summary = "Check username availability", description = "Checks if username is taken or not")
     public ResponseEntity<UserIdentityAvailability> checkUsernameAvailability(
         @RequestParam(value = "username") String username
     ) {
@@ -30,6 +39,8 @@ public class UserController {
     }
 
     @GetMapping("/checkEmailAvailability")
+    @SecurityRequirements
+    @Operation(summary = "Check email availability", description = "Checks if email is taken or not")
     public ResponseEntity<UserIdentityAvailability> checkEmailAvailability(
         @RequestParam(value = "email") String email
     ) {
@@ -39,10 +50,11 @@ public class UserController {
     }
 
     @GetMapping("/me")
+    @Operation(summary = "Get current user summary", description = "Retrieve information about current user which is authenticated with valid access JWT token")
     public ResponseEntity<UserSummary> getCurrentUser(@CurrentUser
                                                       UserPrincipal currentUser) {
         UserSummary userSummary = userService.getCurrentUser(currentUser);
 
-        return new ResponseEntity< >(userSummary, HttpStatus.OK);
+        return new ResponseEntity<>(userSummary, HttpStatus.OK);
     }
 }
