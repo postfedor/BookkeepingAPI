@@ -32,9 +32,12 @@ public class SecurityConfig {
             .and()
             .authorizeHttpRequests(
                 authz -> authz
-                    .antMatchers("/api/auth/signup", "/api/auth/signin",
-                        "/api/auth/token", "/api/user/checkEmailAvailability",
-                        "/api/user/checkUsernameAvailability",
+                    .antMatchers(
+                        "/auth/signup",
+                        "/auth/signin",
+                        "/auth/token",
+                        "/user/checkEmailAvailability",
+                        "/user/checkUsernameAvailability",
                         "/v3/api-docs/**",
                         "/swagger-ui/**"
                     ).permitAll()
