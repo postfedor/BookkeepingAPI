@@ -23,12 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(
-    value = "/channel",
-    consumes = "application/json",
-    produces = "application/json")
+@RequestMapping(value = "/channel")
 @RequiredArgsConstructor
-@Tag(name = "Channel", description = "Telegram channel entity API")
+@Tag(name = "Channel", description = "Manage channel entity")
 public class ChannelController {
     private final ChannelService channelService;
 

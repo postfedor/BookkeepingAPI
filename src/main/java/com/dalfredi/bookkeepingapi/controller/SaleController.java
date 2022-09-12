@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(
-    value = "/channel/{channelId}/sales",
-    consumes = "application/json",
-    produces = "application/json")
+@RequestMapping(value = "/channel/{channelId}/sales")
 @RequiredArgsConstructor
 @Tag(name = "Sales", description = "Sales management")
 public class SaleController {

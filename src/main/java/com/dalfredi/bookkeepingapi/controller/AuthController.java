@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping(
-    value = "/auth",
-    consumes = "application/json",
-    produces = "application/json")
+@RequestMapping(value = "/auth")
 @RequiredArgsConstructor
 @Tag(name = "Auth", description = "JWT authorization and authentication")
 public class AuthController {

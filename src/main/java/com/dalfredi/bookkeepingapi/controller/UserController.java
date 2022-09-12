@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(
-    value = "/user",
-    consumes = "application/json",
-    produces = "application/json")
+@RequestMapping(value = "/user")
 @RequiredArgsConstructor
 @Tag(name = "User", description = "User management")
 public class UserController {

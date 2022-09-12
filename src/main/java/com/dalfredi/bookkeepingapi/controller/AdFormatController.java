@@ -29,8 +29,7 @@ public class AdFormatController {
     @Operation(summary = "Define new format",
         description = "Name is used for referencing. Local name is how it will be look in frontend")
     public ResponseEntity<AdFormatDTO> addFormat(
-        @Valid @RequestBody AdFormatDTO adFormatRequest
-    ) {
+        @Valid @RequestBody AdFormatDTO adFormatRequest) {
         AdFormatDTO newFormat = formatService.addFormat(adFormatRequest);
         return new ResponseEntity<>(newFormat, HttpStatus.CREATED);
     }
@@ -38,8 +37,7 @@ public class AdFormatController {
     @GetMapping("/{id}")
     @Operation(summary = "Get format names by ID")
     public ResponseEntity<AdFormatDTO> getAdFormat(
-        @PathVariable(name = "id") Long formatId
-    ) {
+        @PathVariable(name = "id") Long formatId) {
         AdFormatDTO format = formatService.getFormatById(formatId);
         return new ResponseEntity<>(format, HttpStatus.OK);
     }
@@ -48,8 +46,7 @@ public class AdFormatController {
     @Operation(summary = "Update ads format")
     public ResponseEntity<AdFormatDTO> updateAdFormat(
         @PathVariable(name = "id") Long formatId,
-        @Valid @RequestBody AdFormatDTO formatRequest
-    ) {
+        @Valid @RequestBody AdFormatDTO formatRequest) {
         AdFormatDTO updatedFormat =
             formatService.updateFormat(formatId, formatRequest);
         return new ResponseEntity<>(updatedFormat, HttpStatus.OK);
@@ -58,10 +55,8 @@ public class AdFormatController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete ad format by ID")
     public ResponseEntity<ApiResponse> deleteAdFormat(
-        @PathVariable(name = "id") Long formatId
-    ) {
-        ApiResponse apiResponse =
-            formatService.deleteFormat(formatId);
+        @PathVariable(name = "id") Long formatId) {
+        ApiResponse apiResponse = formatService.deleteFormat(formatId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }
