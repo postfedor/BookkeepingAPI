@@ -4,6 +4,7 @@ import static com.dalfredi.bookkeepingapi.utils.Constants.AD_FORMAT;
 import static com.dalfredi.bookkeepingapi.utils.Constants.CHANNEL;
 import static com.dalfredi.bookkeepingapi.utils.Constants.CUSTOMER;
 import static com.dalfredi.bookkeepingapi.utils.Constants.ID;
+import static com.dalfredi.bookkeepingapi.utils.Constants.SALE;
 import static com.dalfredi.bookkeepingapi.utils.Constants.STATUS;
 
 import com.dalfredi.bookkeepingapi.exception.ResourceNotFoundException;
@@ -34,11 +35,11 @@ public class SaleService {
     private final AdFormatRepository formatRepository;
 
     public SaleDTO addSale(Long channelId, SaleRequest saleRequest,
-                           Long currentUserId) {
+                           Long userId) {
         Channel channel = channelRepository.findById(channelId)
             .orElseThrow(
                 () -> new ResourceNotFoundException(CHANNEL, ID, channelId));
-        if (channel.getOwner().getId().equals(currentUserId)) {
+        if (channel.getOwner().getId().equals(userId)) {
             AdFormat format =
                 formatRepository.findById(saleRequest.getFormat().getId())
                     .orElseThrow(
@@ -66,6 +67,76 @@ public class SaleService {
         }
         ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
             "You don't have permission to add sale to this channel");
+        throw new UnauthorizedException(apiResponse);
+    }
+
+    public SaleDTO getById(Long channelId, Long saleId, Long userId) {
+        Channel channel = channelRepository.findById(channelId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(CHANNEL, ID, channelId));
+        if (channel.getOwner().getId().equals(userId)) {
+            Sale sale = saleRepository.findById(saleId)
+                .orElseThrow(
+                    () -> new ResourceNotFoundException(SALE, ID, saleId));
+            if (sale.getChannel().getId().equals(channelId)) {
+                return SaleDTO.of(sale);
+            }
+        }
+        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
+            "You don't have permission to see this sale info");
+        throw new UnauthorizedException(apiResponse);
+    }
+
+    public SaleDTO updateSale(Long channelId, Long saleId, SaleDTO saleRequest,
+                              Long userId) {
+        Channel channel = channelRepository.findById(channelId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(CHANNEL, ID, channelId));
+        if (channel.getOwner().getId().equals(userId)) {
+            AdFormat format =
+                formatRepository.findById(saleRequest.getFormat().getId())
+                    .orElseThrow(
+                        () -> new ResourceNotFoundException(AD_FORMAT, ID,
+                            saleRequest.getFormat().getId()));
+            Customer customer =
+                customerRepository.findById(saleRequest.getCustomer().getId())
+                    .orElseThrow(
+                        () -> new ResourceNotFoundException(CUSTOMER, ID,
+                            saleRequest.getCustomer().getId()));
+            PaymentStatus status =
+                statusRepository.findById(saleRequest.getStatus().getId())
+                    .orElseThrow(
+                        () -> new ResourceNotFoundException(STATUS, ID,
+                            saleRequest.getStatus().getId()));
+            Sale updatedSale = saleRepository.findById(saleId)
+                .orElseThrow(
+                    () -> new ResourceNotFoundException(SALE, ID, saleId));
+            updatedSale.setDateTime(saleRequest.getDateTime());
+            updatedSale.setFormat(format);
+            updatedSale.setCustomer(customer);
+            updatedSale.setPrice(saleRequest.getPrice());
+            updatedSale.setStatus(status);
+            updatedSale.setChannel(channel);
+            Sale newSale = saleRepository.save(updatedSale);
+            return SaleDTO.of(newSale);
+        }
+        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
+            "You don't have permission to edit this sale info");
+        throw new UnauthorizedException(apiResponse);
+    }
+
+
+    public ApiResponse deleteSaleById(Long saleId, Long userId) {
+        Sale sale = saleRepository.findById(saleId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(SALE, ID, saleId));
+        if (sale.getChannel().getOwner().getId().equals(userId)) {
+            saleRepository.deleteById(saleId);
+            return new ApiResponse(Boolean.TRUE,
+                "You successfully deleted sale");
+        }
+        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
+            "You don't have permission to delete this sale");
         throw new UnauthorizedException(apiResponse);
     }
 }

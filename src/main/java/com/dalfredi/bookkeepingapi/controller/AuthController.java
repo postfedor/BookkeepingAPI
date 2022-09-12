@@ -27,7 +27,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
     consumes = "application/json",
     produces = "application/json")
 @RequiredArgsConstructor
-@Tag(name = "Auth", description = "JWT authentication API")
+@Tag(name = "Auth", description = "JWT authorization and authentication")
 public class AuthController {
 
     private final AuthService authService;

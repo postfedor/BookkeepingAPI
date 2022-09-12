@@ -57,7 +57,8 @@ public class ChannelController {
 
     @PutMapping("/{id}")
     @Parameter(name = "currentUser", hidden = true)
-    @Operation(summary = "Update an existing channel", description = "ID of channel should be passed in request body. Only channel which belongs to current user could be updated.")
+    @Operation(summary = "Update an existing channel",
+        description = "Only channel which belongs to current user could be updated.")
     public ResponseEntity<ChannelResponse> updateChannelInfo(
         @PathVariable(name = "id") Long channelId,
         @Valid @RequestBody ChannelRequest channelRequest,
