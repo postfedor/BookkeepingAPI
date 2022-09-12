@@ -48,6 +48,7 @@ public class User extends DateAudit {
     private Long id;
 
     @NotBlank
+    @NaturalId
     @Size(max = 25)
     @Column(name = "username")
     private String username;
@@ -67,7 +68,6 @@ public class User extends DateAudit {
     private String lastName;
 
     @NotBlank
-    @NaturalId
     @Size(max = 40)
     @Email
     @Column(name = "email")

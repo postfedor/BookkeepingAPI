@@ -4,37 +4,34 @@ import com.dalfredi.bookkeepingapi.model.audit.UserDateAudit;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.NaturalId;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "customer", schema = "bookkeeping")
-public class Customer extends UserDateAudit {
+@Table(name = "payment_status", schema = "bookkeeping")
+public class PaymentStatus extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    Long id;
-    @NotBlank
-    @Size(max = 40)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @NaturalId
     @Column(name = "name")
-    private String name;
-    @NotBlank
-    @Size(max = 32)
-    @Column(name = "tg_username")
-    private String tgUsername;
+    private StatusName name;
 
     @Override
     public boolean equals(Object o) {
@@ -45,8 +42,8 @@ public class Customer extends UserDateAudit {
             Hibernate.getClass(o)) {
             return false;
         }
-        Customer customer = (Customer) o;
-        return id != null && Objects.equals(id, customer.id);
+        PaymentStatus that = (PaymentStatus) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
