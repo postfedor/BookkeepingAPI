@@ -47,7 +47,8 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    @Operation(summary = "Get current user summary", description = "Retrieve information about current user which is authenticated with valid access JWT token")
+    @Operation(summary = "Get current user summary",
+        description = "Retrieve information about current user which have a valid access JWT token")
     public ResponseEntity<UserSummary> getCurrentUser(@CurrentUser
                                                       UserPrincipal currentUser) {
         UserSummary userSummary = userService.getCurrentUser(currentUser);
