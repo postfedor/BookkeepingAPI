@@ -1,4 +1,4 @@
-package com.dalfredi.bookkeepingapi.payload;
+package com.dalfredi.bookkeepingapi.payload.api;
 
 import java.time.Instant;
 import java.util.ArrayList;

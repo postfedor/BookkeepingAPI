@@ -1,4 +1,4 @@
-package com.dalfredi.bookkeepingapi.payload;
+package com.dalfredi.bookkeepingapi.payload.auth;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

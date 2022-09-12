@@ -1,4 +1,4 @@
-package com.dalfredi.bookkeepingapi.payload;
+package com.dalfredi.bookkeepingapi.payload.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,10 +16,6 @@ import java.io.Serializable;
 })
 @NoArgsConstructor
 public class ApiResponse implements Serializable {
-
-    @JsonIgnore
-    private static final long serialVersionUID = 7702134516418120340L;
-
     @JsonProperty("success")
     private Boolean success;
 

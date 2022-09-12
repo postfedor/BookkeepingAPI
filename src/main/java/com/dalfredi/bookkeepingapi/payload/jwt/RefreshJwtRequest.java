@@ -1,4 +1,4 @@
-package com.dalfredi.bookkeepingapi.payload;
+package com.dalfredi.bookkeepingapi.payload.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

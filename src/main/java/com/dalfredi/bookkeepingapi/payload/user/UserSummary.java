@@ -1,4 +1,4 @@
-package com.dalfredi.bookkeepingapi.payload;
+package com.dalfredi.bookkeepingapi.payload.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
