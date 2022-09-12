@@ -1,13 +1,9 @@
 package com.dalfredi.bookkeepingapi.controller;
 
+import com.dalfredi.bookkeepingapi.payload.AdFormatDTO;
 import com.dalfredi.bookkeepingapi.payload.api.ApiResponse;
-import com.dalfredi.bookkeepingapi.payload.channel.ChannelRequest;
-import com.dalfredi.bookkeepingapi.payload.channel.ChannelResponse;
-import com.dalfredi.bookkeepingapi.security.CurrentUser;
-import com.dalfredi.bookkeepingapi.security.UserPrincipal;
-import com.dalfredi.bookkeepingapi.service.ChannelService;
+import com.dalfredi.bookkeepingapi.service.AdFormatService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,61 +19,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(
-    value = "/channel",
-    consumes = "application/json",
-    produces = "application/json")
+@RequestMapping(value = "/format")
 @RequiredArgsConstructor
-@Tag(name = "Channel", description = "Telegram channel entity API")
+@Tag(name = "Ad Format", description = "Manage formats of ads")
 public class AdFormatController {
-    private final ChannelService channelService;
+    private final AdFormatService formatService;
 
     @PostMapping
-    @Parameter(name = "currentUser", hidden = true)
-    @Operation(summary = "Add new channel", description = "Channel owner set to current authenticated user")
-    public ResponseEntity<ChannelResponse> addChannel(
-        @Valid @RequestBody ChannelRequest channelRequest,
-        @CurrentUser UserPrincipal currentUser
+    @Operation(summary = "Define new format",
+        description = "Name is used for referencing. Local name is how it will be look in frontend")
+    public ResponseEntity<AdFormatDTO> addFormat(
+        @Valid @RequestBody AdFormatDTO adFormatRequest
     ) {
-        ChannelResponse channelResponse =
-            channelService.addChannel(channelRequest, currentUser.getId());
-        return new ResponseEntity<>(channelResponse, HttpStatus.CREATED);
+        AdFormatDTO newFormat = formatService.addFormat(adFormatRequest);
+        return new ResponseEntity<>(newFormat, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get channel by ID", description = "Checks if requested channel belongs to current user. Returns only one channel.")
-    public ResponseEntity<ChannelResponse> getChannelInfo(
-        @PathVariable(name = "id") Long channelId,
-        @CurrentUser UserPrincipal currentUser
+    @Operation(summary = "Get format names by ID")
+    public ResponseEntity<AdFormatDTO> getAdFormat(
+        @PathVariable(name = "id") Long formatId
     ) {
-        ChannelResponse channelResponse =
-            channelService.findChannelById(channelId, currentUser.getId());
-        return new ResponseEntity<>(channelResponse, HttpStatus.OK);
+        AdFormatDTO format = formatService.getFormatById(formatId);
+        return new ResponseEntity<>(format, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    @Parameter(name = "currentUser", hidden = true)
-    @Operation(summary = "Update an existing channel", description = "ID of channel should be passed in request body. Only channel which belongs to current user could be updated.")
-    public ResponseEntity<ChannelResponse> updateChannelInfo(
-        @PathVariable(name = "id") Long channelId,
-        @Valid @RequestBody ChannelRequest channelRequest,
-        @CurrentUser UserPrincipal currentUser
+    @Operation(summary = "Update ads format")
+    public ResponseEntity<AdFormatDTO> updateAdFormat(
+        @PathVariable(name = "id") Long formatId,
+        @Valid @RequestBody AdFormatDTO formatRequest
     ) {
-        ChannelResponse channelResponse =
-            channelService.updateChannel(channelId, channelRequest,
-                currentUser.getId());
-        return new ResponseEntity<>(channelResponse, HttpStatus.OK);
+        AdFormatDTO updatedFormat =
+            formatService.updateFormat(formatId, formatRequest);
+        return new ResponseEntity<>(updatedFormat, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @Parameter(name = "currentUser", hidden = true)
-    @Operation(summary = "Delete channel by ID", description = "Channel may only be deleted by its owner")
-    public ResponseEntity<ApiResponse> deleteChannel(
-        @PathVariable(name = "id") Long channelId,
-        @CurrentUser UserPrincipal currentUser
+    @Operation(summary = "Delete ad format by ID")
+    public ResponseEntity<ApiResponse> deleteAdFormat(
+        @PathVariable(name = "id") Long formatId
     ) {
         ApiResponse apiResponse =
-            channelService.deleteChannel(channelId, currentUser.getId());
+            formatService.deleteFormat(formatId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

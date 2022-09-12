@@ -1,6 +1,7 @@
 package com.dalfredi.bookkeepingapi.payload;
 
 import com.dalfredi.bookkeepingapi.model.AdFormat;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AdFormatDTO {
     private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String localName;
 
     public static AdFormatDTO of(AdFormat format) {
