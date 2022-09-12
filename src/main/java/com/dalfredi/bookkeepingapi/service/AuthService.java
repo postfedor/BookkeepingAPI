@@ -2,9 +2,9 @@ package com.dalfredi.bookkeepingapi.service;
 
 import com.dalfredi.bookkeepingapi.exception.ApiException;
 import com.dalfredi.bookkeepingapi.model.User;
-import com.dalfredi.bookkeepingapi.payload.JwtAuthenticationResponse;
-import com.dalfredi.bookkeepingapi.payload.LoginRequest;
-import com.dalfredi.bookkeepingapi.payload.SignUpRequest;
+import com.dalfredi.bookkeepingapi.payload.jwt.JwtAuthenticationResponse;
+import com.dalfredi.bookkeepingapi.payload.auth.SignInRequest;
+import com.dalfredi.bookkeepingapi.payload.auth.SignUpRequest;
 import com.dalfredi.bookkeepingapi.repository.UserRepository;
 import com.dalfredi.bookkeepingapi.security.JwtAuthentication;
 import com.dalfredi.bookkeepingapi.security.JwtProvider;
@@ -52,7 +52,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public JwtAuthenticationResponse login(@NonNull LoginRequest authRequest)
+    public JwtAuthenticationResponse login(@NonNull SignInRequest authRequest)
         throws AuthException {
         final User user =
             userRepository.findByUsername(authRequest.getUsername())

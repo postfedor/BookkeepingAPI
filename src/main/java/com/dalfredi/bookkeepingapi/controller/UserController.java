@@ -1,7 +1,7 @@
 package com.dalfredi.bookkeepingapi.controller;
 
-import com.dalfredi.bookkeepingapi.payload.UserIdentityAvailability;
-import com.dalfredi.bookkeepingapi.payload.UserSummary;
+import com.dalfredi.bookkeepingapi.payload.user.UserIdentityAvailability;
+import com.dalfredi.bookkeepingapi.payload.user.UserSummary;
 import com.dalfredi.bookkeepingapi.security.CurrentUser;
 import com.dalfredi.bookkeepingapi.security.UserPrincipal;
 import com.dalfredi.bookkeepingapi.service.UserService;

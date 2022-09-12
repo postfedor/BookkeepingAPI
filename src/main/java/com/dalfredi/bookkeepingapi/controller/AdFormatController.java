@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
     produces = "application/json")
 @RequiredArgsConstructor
 @Tag(name = "Channel", description = "Telegram channel entity API")
-public class ChannelController {
+public class AdFormatController {
     private final ChannelService channelService;
 
     @PostMapping

@@ -1,6 +1,6 @@
 package com.dalfredi.bookkeepingapi.exception;
 
-import com.dalfredi.bookkeepingapi.payload.ApiResponse;
+import com.dalfredi.bookkeepingapi.payload.api.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

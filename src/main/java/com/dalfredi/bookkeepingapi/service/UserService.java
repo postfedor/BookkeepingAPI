@@ -1,7 +1,7 @@
 package com.dalfredi.bookkeepingapi.service;
 
-import com.dalfredi.bookkeepingapi.payload.UserIdentityAvailability;
-import com.dalfredi.bookkeepingapi.payload.UserSummary;
+import com.dalfredi.bookkeepingapi.payload.user.UserIdentityAvailability;
+import com.dalfredi.bookkeepingapi.payload.user.UserSummary;
 import com.dalfredi.bookkeepingapi.repository.RoleRepository;
 import com.dalfredi.bookkeepingapi.repository.UserRepository;
 import com.dalfredi.bookkeepingapi.security.UserPrincipal;

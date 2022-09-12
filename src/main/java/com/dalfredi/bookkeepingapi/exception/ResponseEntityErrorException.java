@@ -1,6 +1,6 @@
 package com.dalfredi.bookkeepingapi.exception;
 
-import com.dalfredi.bookkeepingapi.payload.ApiResponse;
+import com.dalfredi.bookkeepingapi.payload.api.ApiResponse;
 import org.springframework.http.ResponseEntity;
 
 public class ResponseEntityErrorException extends RuntimeException {

@@ -1,11 +1,11 @@
 package com.dalfredi.bookkeepingapi.controller;
 
 import com.dalfredi.bookkeepingapi.model.User;
-import com.dalfredi.bookkeepingapi.payload.ApiResponse;
-import com.dalfredi.bookkeepingapi.payload.JwtAuthenticationResponse;
-import com.dalfredi.bookkeepingapi.payload.LoginRequest;
-import com.dalfredi.bookkeepingapi.payload.RefreshJwtRequest;
-import com.dalfredi.bookkeepingapi.payload.SignUpRequest;
+import com.dalfredi.bookkeepingapi.payload.api.ApiResponse;
+import com.dalfredi.bookkeepingapi.payload.auth.SignInRequest;
+import com.dalfredi.bookkeepingapi.payload.auth.SignUpRequest;
+import com.dalfredi.bookkeepingapi.payload.jwt.JwtAuthenticationResponse;
+import com.dalfredi.bookkeepingapi.payload.jwt.RefreshJwtRequest;
 import com.dalfredi.bookkeepingapi.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -50,9 +50,10 @@ public class AuthController {
     @SecurityRequirements
     @Operation(summary = "Sign in with username and password", description = "Once signed in, client should store its refresh and access JWT tokens in order to keep authenticated session alive")
     public ResponseEntity<JwtAuthenticationResponse> login(
-        @RequestBody LoginRequest loginRequest
+        @RequestBody SignInRequest signInRequest
     ) throws AuthException {
-        final JwtAuthenticationResponse token = authService.login(loginRequest);
+        final JwtAuthenticationResponse token =
+            authService.login(signInRequest);
         return ResponseEntity.ok(token);
     }
 

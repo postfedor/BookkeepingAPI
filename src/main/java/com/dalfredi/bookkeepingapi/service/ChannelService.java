@@ -8,9 +8,9 @@ import com.dalfredi.bookkeepingapi.exception.ResourceNotFoundException;
 import com.dalfredi.bookkeepingapi.exception.UnauthorizedException;
 import com.dalfredi.bookkeepingapi.model.Channel;
 import com.dalfredi.bookkeepingapi.model.User;
-import com.dalfredi.bookkeepingapi.payload.ApiResponse;
-import com.dalfredi.bookkeepingapi.payload.ChannelRequest;
-import com.dalfredi.bookkeepingapi.payload.ChannelResponse;
+import com.dalfredi.bookkeepingapi.payload.api.ApiResponse;
+import com.dalfredi.bookkeepingapi.payload.channel.ChannelRequest;
+import com.dalfredi.bookkeepingapi.payload.channel.ChannelResponse;
 import com.dalfredi.bookkeepingapi.repository.ChannelRepository;
 import com.dalfredi.bookkeepingapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,7 @@ public class ChannelService {
             channel.setShortName(channelRequest.getShortName());
             channel.setFullName(channelRequest.getFullName());
             channel.setTgUsername(channelRequest.getTgUsername());
-            return new ChannelResponse(channel);
+            return new ChannelResponse(channelRepository.save(channel));
         }
 
         ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
