@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
     consumes = "application/json",
     produces = "application/json")
 @RequiredArgsConstructor
-@Tag(name = "User", description = "User managing")
+@Tag(name = "User", description = "User management")
 public class UserController {
     private final UserService userService;
 
