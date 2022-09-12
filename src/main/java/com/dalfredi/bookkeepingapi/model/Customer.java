@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,29 +21,32 @@ import org.hibernate.Hibernate;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "adformat", schema = "bookkeeping")
-public class AdFormat extends UserDateAudit {
+@Table(name = "customer", schema = "bookkeeping")
+public class Customer extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
-
+    Long id;
     @NotBlank
+    @Size(max = 40)
+    @Column(name = "name")
     private String name;
-
     @NotBlank
-    private String localName;
+    @Size(max = 32)
+    @Column(name = "tg_username")
+    private String tgUsername;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+        if (o == null || Hibernate.getClass(this) !=
+            Hibernate.getClass(o)) {
             return false;
         }
-        AdFormat adFormat = (AdFormat) o;
-        return id != null && Objects.equals(id, adFormat.id);
+        Customer customer = (Customer) o;
+        return id != null && Objects.equals(id, customer.id);
     }
 
     @Override

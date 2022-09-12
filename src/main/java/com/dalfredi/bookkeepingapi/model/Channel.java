@@ -1,5 +1,7 @@
 package com.dalfredi.bookkeepingapi.model;
 
+import com.dalfredi.bookkeepingapi.model.audit.UserDateAudit;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,11 +19,12 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "channels", schema = "bookkeeping")
-public class Channel {
+@Table(name = "channel", schema = "bookkeeping")
+public class Channel extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotBlank

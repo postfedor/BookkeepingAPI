@@ -4,16 +4,31 @@ import com.dalfredi.bookkeepingapi.model.audit.DateAudit;
 import com.dalfredi.bookkeepingapi.model.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-import org.hibernate.Hibernate;
-import org.hibernate.annotations.NaturalId;
-
-import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.List;
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.NaturalId;
 
 @Getter
 @Setter
@@ -21,9 +36,11 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users", schema = "bookkeeping",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"login"}),
-                @UniqueConstraint(columnNames = {"tg_username"})})
+@Table(name = "user", schema = "bookkeeping",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"username"}),
+        @UniqueConstraint(columnNames = {"email"})
+    })
 public class User extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +48,10 @@ public class User extends DateAudit {
     private Long id;
 
     @NotBlank
+    @NaturalId
     @Size(max = 25)
-    @Column(name = "login")
-    private String login;
+    @Column(name = "username")
+    private String username;
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -41,7 +59,6 @@ public class User extends DateAudit {
     @Column(name = "password")
     private String password;
 
-    @NotBlank
     @Size(max = 40)
     @Column(name = "first_name")
     private String firstName;
@@ -51,18 +68,17 @@ public class User extends DateAudit {
     private String lastName;
 
     @NotBlank
-    @NaturalId
     @Size(max = 40)
     @Email
     @Column(name = "email")
     private String email;
 
-    @Size(max = 32)
-    @Column(name = "tg_username")
-    private String tgUsername;
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @JoinTable(
+        name = "user_role", schema = "bookkeeping",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
     private List<Role> roles;
 
     @JsonIgnore
@@ -70,10 +86,21 @@ public class User extends DateAudit {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Channel> channels;
 
+    public User(String username,
+                String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
         User user = (User) o;
         return id != null && Objects.equals(id, user.id);
     }
