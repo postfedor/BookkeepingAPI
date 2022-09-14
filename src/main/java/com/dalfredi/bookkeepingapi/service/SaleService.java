@@ -1,14 +1,18 @@
 package com.dalfredi.bookkeepingapi.service;
 
+import static com.dalfredi.bookkeepingapi.utils.Constants.ADD;
 import static com.dalfredi.bookkeepingapi.utils.Constants.AD_FORMAT;
 import static com.dalfredi.bookkeepingapi.utils.Constants.CHANNEL;
 import static com.dalfredi.bookkeepingapi.utils.Constants.CUSTOMER;
+import static com.dalfredi.bookkeepingapi.utils.Constants.DELETE;
+import static com.dalfredi.bookkeepingapi.utils.Constants.EDIT;
 import static com.dalfredi.bookkeepingapi.utils.Constants.ID;
 import static com.dalfredi.bookkeepingapi.utils.Constants.SALE;
+import static com.dalfredi.bookkeepingapi.utils.Constants.SEE;
 import static com.dalfredi.bookkeepingapi.utils.Constants.STATUS;
 
+import com.dalfredi.bookkeepingapi.exception.AccessDeniedException;
 import com.dalfredi.bookkeepingapi.exception.ResourceNotFoundException;
-import com.dalfredi.bookkeepingapi.exception.UnauthorizedException;
 import com.dalfredi.bookkeepingapi.model.AdFormat;
 import com.dalfredi.bookkeepingapi.model.Channel;
 import com.dalfredi.bookkeepingapi.model.Customer;
@@ -65,9 +69,8 @@ public class SaleService {
             Sale newSale = saleRepository.save(sale);
             return SaleDTO.of(newSale);
         }
-        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
-            "You don't have permission to add sale to this channel");
-        throw new UnauthorizedException(apiResponse);
+
+        throw new AccessDeniedException(ADD, CHANNEL);
     }
 
     public SaleDTO getById(Long channelId, Long saleId, Long userId) {
@@ -82,9 +85,8 @@ public class SaleService {
                 return SaleDTO.of(sale);
             }
         }
-        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
-            "You don't have permission to see this sale info");
-        throw new UnauthorizedException(apiResponse);
+
+        throw new AccessDeniedException(SEE, SALE);
     }
 
     public SaleDTO updateSale(Long channelId, Long saleId, SaleDTO saleRequest,
@@ -120,9 +122,8 @@ public class SaleService {
             Sale newSale = saleRepository.save(updatedSale);
             return SaleDTO.of(newSale);
         }
-        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
-            "You don't have permission to edit this sale info");
-        throw new UnauthorizedException(apiResponse);
+
+        throw new AccessDeniedException(EDIT, SALE);
     }
 
 
@@ -135,8 +136,7 @@ public class SaleService {
             return new ApiResponse(Boolean.TRUE,
                 "You successfully deleted sale");
         }
-        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
-            "You don't have permission to delete this sale");
-        throw new UnauthorizedException(apiResponse);
+
+        throw new AccessDeniedException(DELETE, SALE);
     }
 }

@@ -1,11 +1,14 @@
 package com.dalfredi.bookkeepingapi.service;
 
 import static com.dalfredi.bookkeepingapi.utils.Constants.CHANNEL;
+import static com.dalfredi.bookkeepingapi.utils.Constants.DELETE;
+import static com.dalfredi.bookkeepingapi.utils.Constants.EDIT;
 import static com.dalfredi.bookkeepingapi.utils.Constants.ID;
+import static com.dalfredi.bookkeepingapi.utils.Constants.SEE;
 import static com.dalfredi.bookkeepingapi.utils.Constants.USER;
 
+import com.dalfredi.bookkeepingapi.exception.AccessDeniedException;
 import com.dalfredi.bookkeepingapi.exception.ResourceNotFoundException;
-import com.dalfredi.bookkeepingapi.exception.UnauthorizedException;
 import com.dalfredi.bookkeepingapi.model.Channel;
 import com.dalfredi.bookkeepingapi.model.User;
 import com.dalfredi.bookkeepingapi.payload.api.ApiResponse;
@@ -52,23 +55,18 @@ public class ChannelService {
             return new ChannelResponse(channelRepository.save(channel));
         }
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
-            "You don't have permission to edit this channel info");
-        throw new UnauthorizedException(apiResponse);
+        throw new AccessDeniedException(EDIT, CHANNEL);
     }
 
     public ChannelResponse findChannelById(Long channelId, Long currentUserId) {
         Channel channel = channelRepository.findById(channelId)
             .orElseThrow(
                 () -> new ResourceNotFoundException(CHANNEL, ID, channelId));
-
         if (channel.getOwner().getId().equals(currentUserId)) {
             return new ChannelResponse(channel);
         }
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,
-            "You don't have permission to get this channel info");
-        throw new UnauthorizedException(apiResponse);
+        throw new AccessDeniedException(SEE, CHANNEL);
     }
 
     public ApiResponse deleteChannel(Long channelId, Long currentUserId) {
@@ -77,11 +75,10 @@ public class ChannelService {
                 () -> new ResourceNotFoundException(CHANNEL, ID, channelId));
         if (channel.getOwner().getId().equals(currentUserId)) {
             channelRepository.deleteById(channelId);
-            return new ApiResponse(Boolean.TRUE, "You successfully deleted channel");
+            return new ApiResponse(Boolean.TRUE,
+                "You successfully deleted channel");
         }
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to delete this channel");
-
-        throw new UnauthorizedException(apiResponse);
+        throw new AccessDeniedException(DELETE, CHANNEL);
     }
 }
