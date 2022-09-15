@@ -1,45 +1,24 @@
 package com.dalfredi.bookkeepingapi.exception;
 
 import com.dalfredi.bookkeepingapi.payload.api.ApiResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
-@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 public class AccessDeniedException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    @Getter
+    private final ApiResponse apiResponse;
 
-	private ApiResponse apiResponse;
+    public AccessDeniedException(String message) {
+        super(message);
+        this.apiResponse = new ApiResponse(Boolean.FALSE, message);
+    }
 
-	private String message;
-
-	public AccessDeniedException(ApiResponse apiResponse) {
-		super();
-		this.apiResponse = apiResponse;
-	}
-
-	public AccessDeniedException(String message) {
-		super(message);
-		this.message = message;
-	}
-
-	public AccessDeniedException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public ApiResponse getApiResponse() {
-		return apiResponse;
-	}
-
-	public void setApiResponse(ApiResponse apiResponse) {
-		this.apiResponse = apiResponse;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
+    public AccessDeniedException(String action, String resourceName) {
+        super();
+        String message = StringUtils.capitalize(
+            String.format("You don't have permission to %s this %s", action,
+                resourceName));
+        apiResponse = new ApiResponse(Boolean.FALSE, message);
+    }
 }

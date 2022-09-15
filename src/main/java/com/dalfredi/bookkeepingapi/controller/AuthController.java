@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
-import javax.security.auth.message.AuthException;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +47,9 @@ public class AuthController {
     @Operation(summary = "Sign in with username and password", description = "Once signed in, client should store its refresh and access JWT tokens in order to keep authenticated session alive")
     public ResponseEntity<JwtAuthenticationResponse> login(
         @RequestBody SignInRequest signInRequest
-    ) throws AuthException {
+    ) {
         final JwtAuthenticationResponse token =
-            authService.login(signInRequest);
+            authService.loginUser(signInRequest);
         return ResponseEntity.ok(token);
     }
 
@@ -58,7 +57,7 @@ public class AuthController {
     @SecurityRequirements
     @Operation(summary = "Get access token", description = "Pass refresh token to get a new access one")
     public ResponseEntity<JwtAuthenticationResponse> getNewAccessToken(
-        @RequestBody RefreshJwtRequest request) throws AuthException {
+        @RequestBody RefreshJwtRequest request) {
         final JwtAuthenticationResponse token =
             authService.getAccessToken(request.getRefreshToken());
         return ResponseEntity.ok(token);
@@ -67,7 +66,7 @@ public class AuthController {
     @PostMapping("/refresh")
     @Operation(summary = "Get both access and refresh tokens", description = "This safely keeps your authentication alive without signing in")
     public ResponseEntity<JwtAuthenticationResponse> getNewRefreshToken(
-        @RequestBody RefreshJwtRequest request) throws AuthException {
+        @RequestBody RefreshJwtRequest request) {
         final JwtAuthenticationResponse token =
             authService.refresh(request.getRefreshToken());
         return ResponseEntity.ok(token);
